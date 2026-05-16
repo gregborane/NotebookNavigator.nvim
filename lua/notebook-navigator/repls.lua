@@ -65,7 +65,7 @@ repls.pyrepl = function(start_line, end_line, repl_args, cell_marker)
   local main_pyrepl = require "pyrepl"
 
   if not main_pyrepl.get_chan() then
-    main_pyrepl.open_repl({ "--kernel", "python3" })
+    main_pyrepl.open_repl({ repl_args })
   end
 
   main_pyrepl.send_cell()

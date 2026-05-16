@@ -24,7 +24,7 @@ end
 
 local find_supported_repls = function()
   local supported_repls = {
-    { name = "pyrepl", module = "pyrepl" }
+    { name = "pyrepl", module = "pyrepl" },
     { name = "iron", module = "iron" },
     { name = "toggleterm", module = "toggleterm" },
     { name = "molten", module = "molten.health" },
