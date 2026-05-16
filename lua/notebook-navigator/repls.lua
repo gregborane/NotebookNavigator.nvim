@@ -63,8 +63,9 @@ end
 ---@diagnostic disable-next-line: unused-local
 repls.pyrepl = function(start_line, end_line, repl_args, cell_marker)
   local main_pyrepl = require "pyrepl"
+  local core_pyrepl = require "pyrepl.core"
 
-  if not main_pyrepl.get_chan() then
+  if not core_pyrepl.get_chan() then
     main_pyrepl.open_repl({ repl_args })
   end
 
