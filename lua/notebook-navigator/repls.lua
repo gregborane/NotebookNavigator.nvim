@@ -59,6 +59,19 @@ repls.molten = function(start_line, end_line, repl_args, cell_marker)
   return true
 end
 
+-- pyrepl
+---@diagnostic disable-next-line: unused-local
+repls.pyrepl = function(start_line, end_line, repl_args, cell_marker)
+  local main_pyrepl = require "pyrepl"
+
+  if not main_pyrepl.get_chan() then
+    main_pyrepl.open_repl({ repl_args })
+  end
+
+  main_pyrepl.send_cell()
+  main_pyrepl.step_cell_forward()
+end
+
 -- no repl
 repls.no_repl = function(_) end
 
