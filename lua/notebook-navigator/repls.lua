@@ -66,7 +66,6 @@ repls.pyrepl = function(start_line, end_line, repl_args, cell_marker)
 
   main_pyrepl.open_repl({ repl_args })
   main_pyrepl.send_cell()
-  main_pyrepl.step_cell_foward()
 end
 
 -- no repl
