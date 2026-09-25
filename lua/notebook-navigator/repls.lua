@@ -108,6 +108,18 @@ repls.jukit = function(start_line, end_line, repl_args, cell_marker)
       end
     end
 
+    -- Jukit derives .jukit from expand('%:p:h'), so the source buffer
+    -- must be current when send_to_split() is called.
+    if vim.api.nvim_win_is_valid(current_window) then
+      vim.api.nvim_set_current_win(current_window)
+
+      if vim.api.nvim_buf_is_valid(current_buffer) then
+        vim.api.nvim_win_set_buf(current_window, current_buffer)
+      end
+
+      vim.fn.winrestview(view)
+    end
+
     -- Use NotebookNavigator's range, not jukit's cell-marker parser.
     vim.fn["jukit#send#send_to_split"](code)
     return true

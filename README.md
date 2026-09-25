@@ -174,6 +174,8 @@ The currently supported REPLs are:
 - [iron.nvim](https://github.com/Vigemus/iron.nvim),
 - [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) or
 - [molten-nvim](https://github.com/benlubas/molten-nvim)
+- [pyrepl](https://github.com/dangooddd/pyrepl.nvim),
+- [vim-jukit](https://github.com/luk400/vim-jukit)
 
 The latter are automatically detected. Support for others like `conjure`
 or `yarepl` may be added if people want them or are willing to send in PRs.
