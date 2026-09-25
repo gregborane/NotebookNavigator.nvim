@@ -20,10 +20,6 @@ utils.get_cell_marker = function(bufnr, cell_markers)
   return cstring:format "%%"
 end
 
-if vim.fn.exists "*jukit#send#send_to_split" == 1 then
-  available[#available + 1] = "jukit"
-end
-
 local supported_repls = {
   { name = "jukit", module = "jukit" },
   { name = "pyrepl", module = "pyrepl" },
@@ -36,24 +32,23 @@ function utils.find_supported_repls()
   local available = {}
 
   for _, repl in ipairs(supported_repls) do
-    local ok = pcall(require, repl.module)
+    local is_available = false
 
-    if ok then
+    if repl.name == "jukit" then
+      -- Check if Jukit's autoload function exists in Neovim's runtime
+      is_available = vim.fn.exists "*jukit#splits#output" == 1
+        or #vim.api.nvim_get_runtime_file("autoload/jukit.vim", false) > 0
+    else
+      -- Check standard Lua modules via pcall
+      is_available = pcall(require, repl.module)
+    end
+
+    if is_available then
       available[#available + 1] = repl.name
     end
   end
 
   return available
-end
-
-function utils.has_value(tab, val)
-  for _, value in ipairs(tab) do
-    if value == val then
-      return true
-    end
-  end
-
-  return false
 end
 
 return utils
