@@ -21,6 +21,7 @@ utils.get_cell_marker = function(bufnr, cell_markers)
 end
 
 local supported_repls = {
+  { name = "jukit", module = "jukit" },
   { name = "pyrepl", module = "pyrepl" },
   { name = "iron", module = "iron" },
   { name = "toggleterm", module = "toggleterm" },
