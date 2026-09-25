@@ -60,16 +60,12 @@ repls.molten = function(start_line, end_line, repl_args, cell_marker)
 end
 
 -- pyrepl.nvim
-repls.pyrepl = function(_start_line, _end_line, repl_args, _cell_marker)
+repls.pyrepl = function(start_line, end_line, repl_args, _cell_marker)
   local pyrepl = require "pyrepl"
 
-  -- An empty args table starts jupyter-console immediately using its
-  -- default kernel. A supplied args table is forwarded unchanged.
   pyrepl.open_repl(repl_args or {})
 
-  pyrepl.send_cell()
-
-  return true
+  return pyrepl.send_range(start_line, end_line)
 end
 
 -- no repl
@@ -100,3 +96,5 @@ local get_repl = function(repl_provider)
 
   return chosen_repl
 end
+
+return get_repl
