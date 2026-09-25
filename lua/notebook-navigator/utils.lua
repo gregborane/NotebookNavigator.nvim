@@ -12,37 +12,36 @@ utils.get_cell_marker = function(bufnr, cell_markers)
     return user_opt_cell_marker
   end
 
-  -- use double percent markers as default for cell markers
-  -- DOCS https://jupytext.readthedocs.io/en/latest/formats-scripts.html#the-percent-format
   if not vim.bo.commentstring then
     error("There's no cell marker and no commentstring defined for filetype " .. ft)
   end
+
   local cstring = string.gsub(vim.bo.commentstring, "^%%", "%%%%")
-  local double_percent_cell_marker = cstring:format "%%"
-  return double_percent_cell_marker
+  return cstring:format "%%"
 end
 
-local find_supported_repls = function()
-  local supported_repls = {
-    { name = "pyrepl", module = "pyrepl" },
-    { name = "iron", module = "iron" },
-    { name = "toggleterm", module = "toggleterm" },
-    { name = "molten", module = "molten.health" },
-  }
+local supported_repls = {
+  { name = "pyrepl", module = "pyrepl" },
+  { name = "iron", module = "iron" },
+  { name = "toggleterm", module = "toggleterm" },
+  { name = "molten", module = "molten.health" },
+}
 
-  local available_repls = {}
-  for _, repl in pairs(supported_repls) do
-    if pcall(require, repl.module) then
-      available_repls[#available_repls + 1] = repl.name
+function utils.find_supported_repls()
+  local available = {}
+
+  for _, repl in ipairs(supported_repls) do
+    local ok = pcall(require, repl.module)
+
+    if ok then
+      available[#available + 1] = repl.name
     end
   end
 
-  return available_repls
+  return available
 end
 
-utils.available_repls = find_supported_repls()
-
-utils.has_value = function(tab, val)
+function utils.has_value(tab, val)
   for _, value in ipairs(tab) do
     if value == val then
       return true

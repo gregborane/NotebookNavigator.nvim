@@ -59,38 +59,44 @@ repls.molten = function(start_line, end_line, repl_args, cell_marker)
   return true
 end
 
--- pyrepl
----@diagnostic disable-next-line: unused-local
-repls.pyrepl = function(start_line, end_line, repl_args, cell_marker)
-  local main_pyrepl = require "pyrepl"
+-- pyrepl.nvim
+repls.pyrepl = function(_start_line, _end_line, repl_args, _cell_marker)
+  local pyrepl = require "pyrepl"
 
-  main_pyrepl.open_repl({ repl_args })
-  main_pyrepl.send_cell()
-  main_pyrepl.step_cell_forward()
+  -- An empty args table starts jupyter-console immediately using its
+  -- default kernel. A supplied args table is forwarded unchanged.
+  pyrepl.open_repl(repl_args or {})
+
+  pyrepl.send_cell()
+
+  return true
 end
 
 -- no repl
 repls.no_repl = function(_) end
 
 local get_repl = function(repl_provider)
-  local available_repls = utils.available_repls
-  local chosen_repl = nil
+  local chosen_repl
+
   if repl_provider == "auto" then
-    for _, r in ipairs(available_repls) do
-      chosen_repl = repls[r]
-      break
+    local available_repls = utils.find_supported_repls()
+
+    for _, name in ipairs(available_repls) do
+      chosen_repl = repls[name]
+
+      if chosen_repl then
+        break
+      end
     end
   else
     chosen_repl = repls[repl_provider]
   end
 
-  -- Check if we actuall got out a supported repl
   if chosen_repl == nil then
     vim.notify("[NotebookNavigator] The provided repl, " .. repl_provider .. ", is not supported.")
-    chosen_repl = repls["no_repl"]
+
+    return repls.no_repl
   end
 
   return chosen_repl
 end
-
-return get_repl
