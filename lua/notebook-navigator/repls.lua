@@ -60,11 +60,11 @@ repls.molten = function(start_line, end_line, repl_args, cell_marker)
 end
 
 -- pyrepl.nvim
-repls.pyrepl = function(repl_args, _cell_marker)
+repls.pyrepl = function(_start_line, _end_line, repl_args, _cell_marker)
   local pyrepl = require "pyrepl"
 
   pyrepl.open_repl(repl_args or {})
-  pyrepl.sendcell()
+  pyrepl.send_cell()
 
   return true
 end
