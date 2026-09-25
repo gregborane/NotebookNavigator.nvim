@@ -25,6 +25,7 @@ if vim.fn.exists "*jukit#send#send_to_split" == 1 then
 end
 
 local supported_repls = {
+  { name = "jukit", module = "jukit" },
   { name = "pyrepl", module = "pyrepl" },
   { name = "iron", module = "iron" },
   { name = "toggleterm", module = "toggleterm" },
