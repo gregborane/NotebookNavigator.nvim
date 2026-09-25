@@ -31,20 +31,21 @@ local supported_repls = {
 function utils.find_supported_repls()
   local available = {}
 
+  -- 1. Gather all installed plugin directory names
+  local plugin_paths = vim.fn.globpath(vim.o.packpath, "pack/*/*/*", false, true)
+  local installed_plugins = {}
+  for _, path in ipairs(plugin_paths) do
+    local name = vim.fn.fnamemodify(path, ":t")
+    table.insert(installed_plugins, name:lower())
+  end
+
+  -- 2. Check each supported REPL
   for _, repl in ipairs(supported_repls) do
-    local is_available = false
+    -- Check if it can be loaded as a Lua module OR exists in packpath
+    local is_installed = vim.tbl_contains(installed_plugins, repl.name:lower()) or pcall(require, repl.module)
 
-    if repl.name == "jukit" then
-      -- Check if Jukit's autoload function exists in Neovim's runtime
-      is_available = vim.fn.exists "*jukit#splits#output" == 1
-        or #vim.api.nvim_get_runtime_file("autoload/jukit.vim", false) > 0
-    else
-      -- Check standard Lua modules via pcall
-      is_available = pcall(require, repl.module)
-    end
-
-    if is_available then
-      available[#available + 1] = repl.name
+    if is_installed then
+      table.insert(available, repl.name)
     end
   end
 
