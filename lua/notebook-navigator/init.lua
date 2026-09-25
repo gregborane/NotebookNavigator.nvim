@@ -311,14 +311,12 @@ M.setup = function(config)
     })
   end
 
-  if (not got_hydra) and (M.config.activate_hydra_keys ~= nil) then
-    vim.notify "[NotebookNavigator] Hydra is not available.\nHydra will not be available."
-  end
+  local available_repls = utils.find_supported_repls()
 
-  if #utils.available_repls == 0 then
+  if #available_repls == 0 then
     vim.notify "[NotebookNavigator] No supported REPLs available.\nMost functionality will error out."
   elseif
-    M.config.repl_provider ~= "auto" and not utils.has_value(utils.available_repls, M.config.repl_provider)
+    M.config.repl_provider ~= "auto" and not utils.has_value(available_repls, M.config.repl_provider)
   then
     vim.notify("[NotebookNavigator] The requested repl (" .. M.config.repl_provider .. ") is not available.")
   end
