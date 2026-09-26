@@ -316,7 +316,7 @@ M.setup = function(config)
   if #available_repls == 0 then
     vim.notify "[NotebookNavigator] No supported REPLs available.\nMost functionality will error out."
   elseif
-    M.config.repl_provider ~= "auto" and not utils.has_value(available_repls, M.config.repl_provider)
+    M.config.repl_provider ~= "auto" and not vim.tbl_contains(available_repls, M.config.repl_provider)
   then
     vim.notify("[NotebookNavigator] The requested repl (" .. M.config.repl_provider .. ") is not available.")
   end
